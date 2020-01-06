@@ -1,6 +1,8 @@
 # hashrotatecrypt
 A symmetric crypto algorithm, on any number of bytes and any password size, bigO(number of bytes SQUARED), that uses sha256 on all bytes except the first to choose a byte to xor the first byte, then rotate by 1 byte and repeat until its rotated 2 times
 
+The main logic is in https://github.com/benrayfield/hashrotatecrypt/blob/master/immutable/hashrotatecrypt/HashRotateCrypt.java
+
 I might make small adjustments to the algorithm, so dont count on it staying exactly the same yet. Still needs testing and use in blocks such as block size 56 is most efficient.
 
 Testing class immutable.hashrotatecrypt.HashRotateCrypt
