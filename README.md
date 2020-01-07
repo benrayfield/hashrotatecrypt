@@ -12,7 +12,7 @@ decrypt(ciphertext,password)->plaintext
 Plaintext is 1 or more bytes. Password is 0 or more bytes.
 
 
-I might make small adjustments to the algorithm, so dont count on it staying exactly the same yet. Still needs testing and use in blocks such as block size 56 is most efficient.
+I might make small adjustments to the algorithm, so dont count on it staying exactly the same yet. Still needs testing and use in blocks.
 
 Testing class immutable.hashrotatecrypt.HashRotateCrypt
 
