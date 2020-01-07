@@ -20,10 +20,7 @@ public class HashRotateCrypt{
 		return crypt(-cryptMe.length*2, cryptMe, symmetricPassword);
 	}
 	
-	/** FIXME 2020-1-6 this is failing the test in main func,
-	but I know for sure the math works which I probably didnt type in correctly.
-	<br><br>
-	BigO(cryptMe.length*abs(cyclesPositiveOrNegative)).
+	/** BigO(cryptMe.length*abs(cyclesPositiveOrNegative)).
 	cyclesPositiveOrNegative must be at least cryptMe.length.
 	A good value is cryptMe.length*2.
 	Negate cyclesPositiveOrNegative to decrypt.
@@ -36,6 +33,8 @@ public class HashRotateCrypt{
 		try{
 			hasher = MessageDigest.getInstance("SHA-256");
 		}catch (NoSuchAlgorithmException e){ throw new Error(e); }
+		final boolean doubleHash = true;
+		final int repeatInputAndPasswordNTimes = 2;
 		int cycles = b.length*2;
 		while(Math.abs(cyclesPositiveOrNegative) != 0){
 			//hash concat(b[1..end],symmetricPassword)
@@ -49,9 +48,19 @@ public class HashRotateCrypt{
 				cyclesPositiveOrNegative++;
 			}
 			
-			hasher.update(b, 1, b.length-1);
-			hasher.update(symmetricPassword);
+			for(int repeatInput=0; repeatInput<repeatInputAndPasswordNTimes; repeatInput++){
+				hasher.update(b, 1, b.length-1);
+				hasher.update(symmetricPassword);
+			}
 			byte[] hash = hasher.digest();
+			if(doubleHash){
+				hasher.reset();
+				hasher.update(hash);
+				hash = hasher.digest();
+				//use doubleSha256 cuz might have saw patterns in it with single sha,
+				//near hex digits being the same too often.
+				//doubleSha256 is used in proofOfWork so is safe for this.
+			}
 			byte hashByte = hash[hash.length-1]; //TODO which is better, the start or the end of sha256?
 			b[0] ^= hashByte;
 			
@@ -70,6 +79,7 @@ public class HashRotateCrypt{
 	public static void main(String... args){
 		lg("Testing "+HashRotateCrypt.class);
 		String cryptMe = "The quick brown fox jumps over the lazy dog";
+		//String password = "password";
 		String password = "password";
 		byte[] encrypted = encrypt(Text.stringToBytes(cryptMe), Text.stringToBytes(password));
 		String encryptedHex = Text.bytesToHex(encrypted);

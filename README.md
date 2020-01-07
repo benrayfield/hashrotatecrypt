@@ -1,5 +1,5 @@
 # hashrotatecrypt
-A symmetric crypto algorithm, on any number of bytes and any password size, bigO(number of bytes SQUARED), that uses sha256 on all bytes except the first to choose a byte to xor the first byte, then rotate by 1 byte and repeat until its rotated 2 times
+A symmetric crypto algorithm, on any number of bytes and any password size, bigO(number of bytes SQUARED), that uses double-sha256 on concat2Of(concat(all bytes except the first, password)) to choose a byte to xor the first byte, then rotate by 1 byte and repeat until its rotated 2 times around blockSize.
 
 The main logic is in https://github.com/benrayfield/hashrotatecrypt/blob/master/immutable/hashrotatecrypt/HashRotateCrypt.java
 
@@ -13,10 +13,8 @@ cryptMe to bytes then back to string: The quick brown fox jumps over the lazy do
 
 password: password
 
-encryptedHex: 5a824f18a851c2b219a293bb8978176783ef339395f979f48dd1e00a144ba30db25b1696a1557603fb8ee8
+encryptedHex: 15632eaf266284a5934bcb52570b6d237961a28456383c663c452be61967a2c978e38c6d92541df38f1960
 
-encryptedString: Z�O�Q²����xg��3���y���
-K�
-�[��Uv���
+encryptedString: c.�&b���K�RWm#ya��V8<f<E+�g��x�m�T�`
 
 DecryptedString: The quick brown fox jumps over the lazy dog
